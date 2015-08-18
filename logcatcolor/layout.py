@@ -44,11 +44,11 @@ class Layout(object):
     def layout_marker(self, line):
         return self.MARKER_LAYOUT % line
 
-    def layout_data(self, data):
+    def layout_data(self, data, search=None):
         formatted = StringIO()
         for index in range(0, self.column_count):
             column = self.columns[index]
-            formatted.write(column.format(data[column.NAME]))
+            formatted.write(column.format(data[column.NAME], search))
             if index < self.column_count - 1:
                 formatted.write(" ")
 
@@ -68,7 +68,7 @@ class RawLayout(Layout):
 @layout
 class BriefLayout(Layout):
     NAME = "brief"
-    COLUMNS = (PIDColumn, TagColumn, PriorityColumn, MessageColumn)
+    COLUMNS = (PriorityColumn, PIDColumn, TagColumn, MessageColumn)
 
 @layout
 class ProcessLayout(Layout):
@@ -78,22 +78,22 @@ class ProcessLayout(Layout):
 @layout
 class TagLayout(Layout):
     NAME = "tag"
-    COLUMNS = (TagColumn, PriorityColumn, MessageColumn)
+    COLUMNS = (PriorityColumn, TagColumn, MessageColumn)
 
 @layout
 class ThreadLayout(Layout):
     NAME = "thread"
-    COLUMNS = (PIDColumn, TIDColumn, PriorityColumn, MessageColumn)
+    COLUMNS = (PriorityColumn, PIDColumn, TIDColumn, MessageColumn)
 
 @layout
 class TimeLayout(Layout):
     NAME = "time"
-    COLUMNS = (DateColumn, TimeColumn, ) + BriefLayout.COLUMNS
+    COLUMNS = (PriorityColumn, DateColumn, TimeColumn, PIDColumn, TagColumn, MessageColumn)
 
 @layout
 class ThreadTimeLayout(Layout):
     NAME = "threadtime"
-    COLUMNS = (DateColumn, TimeColumn, PIDColumn, TIDColumn, TagColumn, PriorityColumn, MessageColumn)
+    COLUMNS = (PriorityColumn, DateColumn, TimeColumn, PIDColumn, TIDColumn, TagColumn, MessageColumn)
 
 @layout
 class LongLayout(Layout):

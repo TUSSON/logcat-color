@@ -46,6 +46,10 @@ class LogcatColor(object):
         elif self.profile and self.profile.format:
             self.format = self.profile.format
 
+        self.search = None
+        if self.options.search:
+            self.search = self.options.search
+
         self.layout = self.format
         if self.options.plain:
             self.layout = "raw"
@@ -94,7 +98,7 @@ class LogcatColor(object):
         parser.add_option("-e", "--emulator", action="store_const",
             dest="adb_device", const="emulator",
             help="connect to the only running emulator")
-        parser.add_option("-s", "--serial-number", dest="adb_device",
+        parser.add_option("-S", "--serial-number", dest="adb_device",
             help="connect to a specific device by it's serial number")
 
         # Logcat options
@@ -128,6 +132,8 @@ class LogcatColor(object):
             help="sets the output format for log messages. possible formats:" +
                  " brief, process, tag, raw, time, threadtime, long" +
                  " (default: brief)")
+        parser.add_option("-s", "--search", dest="search", default=None,
+            help="only output lines contain search string")
 
         (options, args) = parser.parse_args(args)
         self.options = options
@@ -222,8 +228,8 @@ class LogcatColor(object):
 
     def init_reader(self):
         reader = LogcatReader(self.input, self.config, profile=self.profile,
-            format=self.format, layout=self.layout, writer=self.output,
-            width=self.width)
+            format=self.format, layout=self.layout, search=self.search,
+            writer=self.output, width=self.width)
 
     def start(self):
         # if someone is piping, use stdin as input. if not, invoke adb logcat

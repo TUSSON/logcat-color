@@ -16,6 +16,7 @@ from logcatcolor.layout import Layout
 import os
 import sys
 import traceback
+import re
 
 # Parts copied from asyncore.file_dispatcher
 class FileLineReader(asynchat.async_chat):
@@ -63,7 +64,7 @@ class FileLineReader(asynchat.async_chat):
 class LogcatReader(FileLineReader):
     DETECT_COUNT = 3
 
-    def __init__(self, file, config, profile=None, format=None, layout=None,
+    def __init__(self, file, config, profile=None, format=None, layout=None, search=None,
                  writer=None, width=80):
         FileLineReader.__init__(self, file)
         self.detect_lines = []
@@ -71,6 +72,7 @@ class LogcatReader(FileLineReader):
         self.profile = profile
         self.width = width
         self.writer = writer or sys.stdout
+        self.search = search
 
         self.format = None
         if format is not None:
@@ -121,14 +123,22 @@ class LogcatReader(FileLineReader):
         if Format.MARKER_REGEX.match(line):
             result = self.layout.layout_marker(line)
             if result:
-                self.writer.write(result)
+                self.writer.write(result + "\n")
             return
 
         try:
+            if self.search:
+                if self.search.islower():
+                    if not re.compile(self.search, re.IGNORECASE).search(line):
+                        return
+                else:
+                    if not re.compile(self.search).search(line):
+                        return
+
             if not self.format.match(line) or not self.format.include(self.profile):
                 return
 
-            result = self.layout.layout_data(self.format.data)
+            result = self.layout.layout_data(self.format.data, self.search)
             if not result:
                 return
 
