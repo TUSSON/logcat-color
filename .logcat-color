@@ -1,0 +1,38 @@
+# Full path to adb, default is to look at the environment variable ADB, or
+# fall back on using "adb" from the system PATH
+adb = "/usr/bin/adb"
+
+# Width of the TAG column, default is 20
+tag_width = 30
+
+# Width of the PID column, default is 8
+pid_width = 5
+
+# Width of priority (log level) column, default is 3
+priority_width = 1
+
+# Whether or not to wrap the message inside a column. Setting this to False
+# enables easier copy/paste. default is True
+wrap = False
+
+Profile(name = "audio",
+        tags = {
+            "AudioHardware": BLUE,
+            "audio_hw_primary": BLUE,
+            "alsa_route": GREEN,
+            "alsa_pcm": MAGENTA,
+            "alsa_mixer": RESET,
+            "AudioPolicyManagerBase": RED,
+            "AudioTrack": CYAN,
+            "AudioSink": YELLOW,
+            "AudioFlinger":YELLOW,
+            "AudioService":CYAN
+        },
+       )
+Profile(name = "camera",
+        tags = {
+            "CameraHal": BLUE,
+            "CameraService": GREEN,
+            "CameraHal_Marvin": YELLOW
+        },
+       )
