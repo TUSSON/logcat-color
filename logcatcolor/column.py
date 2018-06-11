@@ -40,20 +40,20 @@ class Column(object):
 
 class DateColumn(Column):
     NAME = "date"
-    FORMAT = Fore.BLUE + Style.DIM + \
+    FORMAT = Fore.BLUE + Style.NORMAL + \
              "%s" + Style.RESET_ALL
     DEFAULT_WIDTH = 7
 
 class TimeColumn(Column):
     NAME = "time"
-    FORMAT = Fore.BLUE + Style.DIM + \
+    FORMAT = Fore.BLUE + Style.NORMAL + \
              "%s" + Style.RESET_ALL
     DEFAULT_WIDTH = 14
 
 class PIDColumn(Column):
     NAME = "pid"
     DEFAULT_WIDTH = 8
-    FORMAT = Fore.BLUE + Style.DIM + \
+    FORMAT = Fore.BLUE + Style.NORMAL + \
              "%s" + Style.RESET_ALL
 
     def format(self, pid, search=None):
@@ -111,9 +111,9 @@ class TagColumn(Column):
                 tag = tag[0:self.width-2] + ".."
 
         tag = tag.ljust(self.width)
-        s = SearchFormat(self.color + Style.DIM)
+        s = SearchFormat(self.color + Style.NORMAL)
         tag = s.format(tag, search)
-        return self.color + Style.DIM + tag + Style.RESET_ALL
+        return self.color + Style.NORMAL + tag + Style.RESET_ALL
 
 TagColumn.init_color_map()
 
@@ -147,13 +147,13 @@ class MessageColumn(Column):
     DEFAULT_WIDTH = 0
     global g_CurPriority 
     FORMATS = {
-        "V": Fore.RESET + Style.DIM,
-        "D": Fore.BLUE + Style.DIM,
-        "I": Fore.GREEN + Style.DIM,
-        "W": Fore.YELLOW + Style.DIM,
-        "E": Fore.RED + Style.DIM,
-        "F": Fore.RED + Style.DIM,
-        "S": Fore.WHITE + Style.DIM
+        "V": Fore.RESET + Style.NORMAL,
+        "D": Fore.BLUE + Style.NORMAL,
+        "I": Fore.GREEN + Style.NORMAL,
+        "W": Fore.YELLOW + Style.NORMAL,
+        "E": Fore.RED + Style.NORMAL,
+        "F": Fore.RED + Style.NORMAL,
+        "S": Fore.WHITE + Style.NORMAL
     }
 
     def __init__(self, layout):
